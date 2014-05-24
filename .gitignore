@@ -1,0 +1,10 @@
+.lein-*
+out/
+*.swp
+main.js
+/lib
+/lein
+pom.xml
+/target
+/.lein-plugins
+/output
