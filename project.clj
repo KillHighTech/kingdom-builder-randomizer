@@ -4,7 +4,7 @@
 
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/clojurescript "0.0-2197"]
-                 [om "0.6.3"]]
+                 [reagent "0.4.2"]]
 
   :plugins [[lein-cljsbuild "1.0.3"]]
 
@@ -16,6 +16,5 @@
               :compiler {
                 :output-to "main.js"
                 :output-dir "out"
-                :preamble ["react/react.min.js"]
-                :externs ["react/externs/react.js"]
+                :preamble ["reagent/react.js"]
                 :optimizations :advanced}}]})

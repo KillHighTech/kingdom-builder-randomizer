@@ -1,6 +1,5 @@
 (ns kingdom-builder
-  (:require [om.core :as om :include-macros true]
-            [om.dom :as dom :include-macros true]))
+  (:require [reagent.core :as reagent :refer [atom]]))
 
 (def ^:export base-set
   {:goals ["Fishermen"
@@ -86,18 +85,15 @@
 (def expansions {:nomads nomads :crossroads crossroads})
 
 (defn expansion-state [expansion]
-  (dom/button #js {:onClick (fn [e] (if (expansion @app-state) (swap! app-state disj expansion) (swap! app-state conj expansion)))} (str expansion (if (expansion @app-state) "(enabled)" "(disabled)"))))
+  [:button {:on-click (fn [e] (if (expansion @app-state) (swap! app-state disj expansion) (swap! app-state conj expansion)))} (str expansion (if (expansion @app-state) "(enabled)" "(disabled)"))])
 
-(defn kingdom-builder-widget [state owner]
-  (reify
-    om/IRender
-      (render [this]
-        (dom/div nil
-          (dom/div nil
-            (apply dom/div nil (map expansion-state (keys expansions)))
-            (dom/button #js {:onClick (fn [e] (swap! app-state disj nil))} "again"))
-          (dom/code nil (prn-str (setup (map expansions @app-state))))))))
+(defn kingdom-builder-widget []
+  [:div
+   [:div
+    [:div (map expansion-state (keys expansions)) [:button {:on-click (fn [e] (swap! app-state disj nil))} "again"]]
+    [:div
+     [:code (prn-str (setup (map expansions @app-state)))]]]])
 
-(om/root kingdom-builder-widget app-state
-  {:target (. js/document (getElementById "app"))})
+(reagent/render-component [kingdom-builder-widget]
+  (. js/document (getElementById "app")))
 
